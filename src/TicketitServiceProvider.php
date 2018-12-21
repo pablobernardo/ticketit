@@ -106,6 +106,9 @@ class TicketitServiceProvider extends ServiceProvider
             $this->publishes([__DIR__.'/Public' => public_path('vendor/ticketit')], 'public');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
 
+            // Publish ticketit config
+            $this->publishes([__DIR__.'/Config' => base_path('config')], 'config');
+            
             // Check public assets are present, publish them if not
 //            $installer->publicAssets();
 
@@ -127,6 +130,9 @@ class TicketitServiceProvider extends ServiceProvider
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
             $this->loadViewsFrom(__DIR__.'/Views/bootstrap3', 'ticketit');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
+            
+            // Publish ticketit config
+            $this->publishes([__DIR__.'/Config' => base_path('config')], 'config');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 

@@ -79,7 +79,8 @@ class Agent extends User
     {
         if (version_compare(app()->version(), '5.2.0', '>=')) {
             return $query->where('ticketit_agent', '1')->pluck('name', 'id')->toArray();
-        } else { // if Laravel 5.1
+        } else {
+            // if Laravel 5.1
             return $query->where('ticketit_agent', '1')->lists('name', 'id')->toArray();
         }
     }
@@ -194,6 +195,7 @@ class Agent extends User
     }
 
     public function allTickets($complete = false) // (To be deprecated)
+
     {
         if ($complete) {
             return Ticket::whereNotNull('completed_at');
@@ -203,6 +205,7 @@ class Agent extends User
     }
 
     public function getTickets($complete = false) // (To be deprecated)
+
     {
         $user = self::find(auth()->user()->id);
 

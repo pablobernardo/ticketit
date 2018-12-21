@@ -15,6 +15,12 @@ It will integrate into your current Laravel project within minutes, and you can 
 
 [Full features list (12+) and screen shots](https://github.com/thekordy/ticketit/wiki/v0.2.3-Features)
 
+## Fork Documentation:
+
+### PLEASE READ FORK DOCUMENTATION BEFORE INSTALLATION: [FORK DOCUMENTATION](FORK.md).
+
+---
+
 ## Quick installation
 
 If you'd like to install Ticketit as a standalone app, use our [quick installer](https://gitlab.com/balping/ticketit-app). This is a Laravel application pre-configured to work with Ticketit. Using the quick installer minimises the efforts and knowledge about Laravel needed to install Ticketit.
@@ -41,7 +47,6 @@ However if you'd like to include Ticketit in your existing project, skip to the 
 
 ### Installation steps (4-8 minutes)
 
-
 Step 1. Run this code via your terminal (1-2 minutes)
 ```shell
 composer require 'kordy/ticketit:0.*'
@@ -51,8 +56,59 @@ Step 2. After install, you have to add this line on your `config/app.php` in Ser
 ```php
 Kordy\Ticketit\TicketitServiceProvider::class,
 ```
-
 Step 3. [Check if App\User exists](https://github.com/thekordy/ticketit/wiki/Make-sure-that-App%5CUser-exists)
+
+----
+
+
+
+#### Step 3.1 Fork additions
+
+**PLEASE READ FORK DOCUMENTATION BEFORE INSTALLATION: [FORK DOCUMENTATION](FORK.md)**
+
+- Create **App\TicketitModel** with your desired Ticketit Model.
+
+```php
+
+# Create file /app/TicketitModel.php
+
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+//use My\CustomModel as BaseModel;
+
+class TicketitModel extends BaseModel
+{
+    // Custom model for (thekordy/ticketit)
+}
+
+```
+
+- Publish ticketit.php config file on Laravel for customizations (some of them required before installation):
+
+```bash
+	
+	# Migrations on ticketit
+	$ artisan vendor:publish --provider="Kordy\Ticketit\TicketitServiceProvider" --tag=config --force
+
+```
+
+- Add your custom database connections at .env  for example:
+
+```bash
+	# Migrations on ticketit
+	# I have only checked using same connection for both. 
+	# Maybe it doesn't work with different connections because of raw sql joins in some parts of code
+	TICKETIT_CONNECTION=default
+	TICKETIT_DB=users
+	TICKETIT_USER_CONNECTION=default
+	TICKETIT_USER_DB=users
+
+```
+
+----
 
 Step 4. Make sure you have [authentication](https://laravel.com/docs/5.4/authentication#introduction) set up. In 5.2+, you can use `php artisan make:auth`
 

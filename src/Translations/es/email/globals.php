@@ -2,10 +2,11 @@
 
 return [
 
-    'assigned'    => 'Tiquete Asignado',
-    'comment'     => 'Nuevo Comentario',
-    'status'      => 'Estado Cambiado',
-    'transfer'    => 'Tiquete Transferido',
-    'view-ticket' => 'Haz click aquí para ver su tiquete.',
+    'assigned'    => 'Ticket asignado',
+    'comment'     => 'Nuevo comentario',
+    'status'      => 'Estado modificado',
+    'completed'   => 'Ticket cerrado',
+    'transfer'    => 'Ticket transferido',
+    'view-ticket' => 'Ver ticket',
 
 ];

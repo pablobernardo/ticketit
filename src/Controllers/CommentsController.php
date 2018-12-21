@@ -44,8 +44,8 @@ class CommentsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'ticket_id'   => 'required|exists:ticketit,id',
-            'content'     => 'required|min:6',
+            'ticket_id' => 'required|exists:' . config('ticketit.db_name') . '.ticketit,id',
+            'content'   => 'required|min:6',
         ]);
 
         $comment = new Models\Comment();
@@ -53,10 +53,10 @@ class CommentsController extends Controller
         $comment->setPurifiedContent($request->get('content'));
 
         $comment->ticket_id = $request->get('ticket_id');
-        $comment->user_id = \Auth::user()->id;
+        $comment->user_id   = \Auth::user()->id;
         $comment->save();
 
-        $ticket = Models\Ticket::find($comment->ticket_id);
+        $ticket             = Models\Ticket::find($comment->ticket_id);
         $ticket->updated_at = $comment->created_at;
         $ticket->save();
 

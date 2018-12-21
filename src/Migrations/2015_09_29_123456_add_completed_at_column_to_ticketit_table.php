@@ -12,7 +12,10 @@ class AddCompletedAtColumnToTicketitTable extends Migration
      */
     public function up()
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
+        Schema::connection($cn)->table('ticketit', function (Blueprint $table) {
             $table->timestamp('completed_at')->nullable();
         });
     }
@@ -24,7 +27,10 @@ class AddCompletedAtColumnToTicketitTable extends Migration
      */
     public function down()
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
+        Schema::connection($cn)->table('ticketit', function (Blueprint $table) {
             $table->dropColumn('completed_at');
         });
     }

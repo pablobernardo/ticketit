@@ -12,11 +12,14 @@ class AddHtmlcontentToTicketitAndComments extends Migration
      */
     public function up()
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
+        Schema::connection($cn)->table('ticketit', function (Blueprint $table) {
             $table->longText('html')->nullable()->after('content');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::connection($cn)->table('ticketit_comments', function (Blueprint $table) {
             $table->longText('html')->nullable()->after('content');
             $table->longText('content')->change();
         });
@@ -29,11 +32,14 @@ class AddHtmlcontentToTicketitAndComments extends Migration
      */
     public function down()
     {
-        Schema::table('ticketit', function (Blueprint $table) {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
+        Schema::connection($cn)->table('ticketit', function (Blueprint $table) {
             $table->dropColumn('html');
         });
 
-        Schema::table('ticketit_comments', function (Blueprint $table) {
+        Schema::connection($cn)->table('ticketit_comments', function (Blueprint $table) {
             $table->dropColumn('html');
             $table->text('content')->change();
         });

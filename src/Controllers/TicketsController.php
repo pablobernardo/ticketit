@@ -25,7 +25,7 @@ class TicketsController extends Controller
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
-        $this->agent = $agent;
+        $this->agent   = $agent;
     }
 
     public function data($complete = false)
@@ -97,28 +97,28 @@ class TicketsController extends Controller
     {
         $collection->editColumn('subject', function ($ticket) {
             return (string) link_to_route(
-                Setting::grab('main_route').'.show',
+                Setting::grab('main_route') . '.show',
                 $ticket->subject,
                 $ticket->id
             );
         });
 
         $collection->editColumn('status', function ($ticket) {
-            $color = $ticket->color_status;
+            $color  = $ticket->color_status;
             $status = e($ticket->status);
 
             return "<div style='color: $color'>$status</div>";
         });
 
         $collection->editColumn('priority', function ($ticket) {
-            $color = $ticket->color_priority;
+            $color    = $ticket->color_priority;
             $priority = e($ticket->priority);
 
             return "<div style='color: $color'>$priority</div>";
         });
 
         $collection->editColumn('category', function ($ticket) {
-            $color = $ticket->color_category;
+            $color    = $ticket->color_category;
             $category = e($ticket->category);
 
             return "<div style='color: $color'>$category</div>";
@@ -208,8 +208,8 @@ class TicketsController extends Controller
         $this->validate($request, [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
-            'priority_id' => 'required|exists:ticketit_priorities,id',
-            'category_id' => 'required|exists:ticketit_categories,id',
+            'priority_id' => 'required|exists:' . config('ticketit.db_name') . '.ticketit_priorities,id',
+            'category_id' => 'required|exists:' . config('ticketit.db_name') . '.ticketit_categories,id',
         ]);
 
         $ticket = new Ticket();
@@ -222,7 +222,7 @@ class TicketsController extends Controller
         $ticket->category_id = $request->category_id;
 
         $ticket->status_id = Setting::grab('default_status_id');
-        $ticket->user_id = auth()->user()->id;
+        $ticket->user_id   = auth()->user()->id;
         $ticket->autoSelectAgent();
 
         $ticket->save();
@@ -245,7 +245,7 @@ class TicketsController extends Controller
 
         list($priority_lists, $category_lists, $status_lists) = $this->PCS();
 
-        $close_perm = $this->permToClose($id);
+        $close_perm  = $this->permToClose($id);
         $reopen_perm = $this->permToReopen($id);
 
         $cat_agents = Models\Category::find($ticket->category_id)->agents()->agentsLists();
@@ -275,9 +275,9 @@ class TicketsController extends Controller
         $this->validate($request, [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
-            'priority_id' => 'required|exists:ticketit_priorities,id',
-            'category_id' => 'required|exists:ticketit_categories,id',
-            'status_id'   => 'required|exists:ticketit_statuses,id',
+            'priority_id' => 'required|exists:' . config('ticketit.db_name') . '.ticketit_priorities,id',
+            'category_id' => 'required|exists:' . config('ticketit.db_name') . '.ticketit_categories,id',
+            'status_id'   => 'required|exists:' . config('ticketit.db_name') . '.ticketit_statuses,id',
             'agent_id'    => 'required',
         ]);
 
@@ -287,7 +287,7 @@ class TicketsController extends Controller
 
         $ticket->setPurifiedContent($request->get('content'));
 
-        $ticket->status_id = $request->status_id;
+        $ticket->status_id   = $request->status_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority_id = $request->priority_id;
 
@@ -301,7 +301,7 @@ class TicketsController extends Controller
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified'));
 
-        return redirect()->route(Setting::grab('main_route').'.show', $id);
+        return redirect()->route(Setting::grab('main_route') . '.show', $id);
     }
 
     /**
@@ -313,13 +313,13 @@ class TicketsController extends Controller
      */
     public function destroy($id)
     {
-        $ticket = $this->tickets->findOrFail($id);
+        $ticket  = $this->tickets->findOrFail($id);
         $subject = $ticket->subject;
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));
 
-        return redirect()->route(Setting::grab('main_route').'.index');
+        return redirect()->route(Setting::grab('main_route') . '.index');
     }
 
     /**
@@ -332,7 +332,7 @@ class TicketsController extends Controller
     public function complete($id)
     {
         if ($this->permToClose($id) == 'yes') {
-            $ticket = $this->tickets->findOrFail($id);
+            $ticket               = $this->tickets->findOrFail($id);
             $ticket->completed_at = Carbon::now();
 
             if (Setting::grab('default_close_status_id')) {
@@ -344,10 +344,10 @@ class TicketsController extends Controller
 
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', ['name' => $subject]));
 
-            return redirect()->route(Setting::grab('main_route').'.index');
+            return redirect()->route(Setting::grab('main_route') . '.index');
         }
 
-        return redirect()->route(Setting::grab('main_route').'.index')
+        return redirect()->route(Setting::grab('main_route') . '.index')
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
     }
 
@@ -361,7 +361,7 @@ class TicketsController extends Controller
     public function reopen($id)
     {
         if ($this->permToReopen($id) == 'yes') {
-            $ticket = $this->tickets->findOrFail($id);
+            $ticket               = $this->tickets->findOrFail($id);
             $ticket->completed_at = null;
 
             if (Setting::grab('default_reopen_status_id')) {
@@ -373,10 +373,10 @@ class TicketsController extends Controller
 
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', ['name' => $subject]));
 
-            return redirect()->route(Setting::grab('main_route').'.index');
+            return redirect()->route(Setting::grab('main_route') . '.index');
         }
 
-        return redirect()->route(Setting::grab('main_route').'.index')
+        return redirect()->route(Setting::grab('main_route') . '.index')
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
     }
 
@@ -390,10 +390,10 @@ class TicketsController extends Controller
         }
 
         $selected_Agent = $this->tickets->find($ticket_id)->agent->id;
-        $select = '<select class="form-control" id="agent_id" name="agent_id">';
+        $select         = '<select class="form-control" id="agent_id" name="agent_id">';
         foreach ($agents as $id => $name) {
             $selected = ($id == $selected_Agent) ? 'selected' : '';
-            $select .= '<option value="'.$id.'" '.$selected.'>'.$name.'</option>';
+            $select .= '<option value="' . $id . '" ' . $selected . '>' . $name . '</option>';
         }
         $select .= '</select>';
 
@@ -456,10 +456,10 @@ class TicketsController extends Controller
         }
 
         for ($m = $period; $m >= 0; $m--) {
-            $from = Carbon::now();
+            $from      = Carbon::now();
             $from->day = 1;
             $from->subMonth($m);
-            $to = Carbon::now();
+            $to      = Carbon::now();
             $to->day = 1;
             $to->subMonth($m);
             $to->endOfMonth();
@@ -485,9 +485,9 @@ class TicketsController extends Controller
             return false;
         }
 
-        $created = new Carbon($ticket->created_at);
+        $created   = new Carbon($ticket->created_at);
         $completed = new Carbon($ticket->completed_at);
-        $length = $created->diff($completed)->days;
+        $length    = $created->diff($completed)->days;
 
         return $length;
     }
@@ -513,7 +513,7 @@ class TicketsController extends Controller
         }
 
         $performance_count = 0;
-        $counter = 0;
+        $counter           = 0;
         foreach ($tickets as $ticket) {
             $performance_count += $this->ticketPerformance($ticket);
             $counter++;

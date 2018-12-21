@@ -3,8 +3,8 @@
 return [
 
 'data' => '
-	<b>:name</b> creó el tiquete nuevo <b>:subject</b><br>
-	:status en :category, y te lo asignaron.<br>
+	Te ha sido asignado el ticket <strong>":subject"</strong><br />
+	creado por <strong>:name</strong> con estado ":status" en ":category".<br />
 ',
 
 ];

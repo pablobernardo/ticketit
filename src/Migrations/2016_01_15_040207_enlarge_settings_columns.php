@@ -12,8 +12,11 @@ class EnlargeSettingsColumns extends Migration
      */
     public function up()
     {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
         //make value, default columns bigger
-        Schema::table('ticketit_settings', function (Blueprint $table) {
+        Schema::connection($cn)->table('ticketit_settings', function (Blueprint $table) {
             $table->mediumText('value')->change();
             $table->mediumText('default')->change();
         });
@@ -26,7 +29,10 @@ class EnlargeSettingsColumns extends Migration
      */
     public function down()
     {
-        Schema::table('ticketit_settings', function (Blueprint $table) {
+        // Ticketit connection
+        $cn = config('ticketit.connection');
+
+        Schema::connection($cn)->table('ticketit_settings', function (Blueprint $table) {
             $table->string('value')->change();
             $table->string('default')->change();
         });

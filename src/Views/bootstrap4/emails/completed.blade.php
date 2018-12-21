@@ -1,10 +1,11 @@
-<?php $comment = unserialize($comment);?>
+<?php $notification_owner = unserialize($notification_owner);?>
+<?php $original_ticket = unserialize($original_ticket);?>
 <?php $ticket = unserialize($ticket);?>
 
 @extends($email)
 
 @section('subject')
-	{{ trans('ticketit::email/globals.comment') }}
+	{{ trans('ticketit::email/globals.completed') }}
 @stop
 
 @section('link')
@@ -14,11 +15,10 @@
 @stop
 
 @section('content')
-	{!! trans('ticketit::email/comment.data', [
-	    'name'      =>  $comment->user->name,
-	    'subject'   =>  $ticket->subject,
-	    'status'    =>  $ticket->status->name,
-	    'category'  =>  $ticket->category->name,
-	    'comment'   =>  $comment->getShortContent()
+	{!! trans('ticketit::email/completed.data', [
+	    'name'        =>  $notification_owner->name,
+	    'subject'     =>  $ticket->subject,
+	    'old_status'  =>  $original_ticket->status->name,
+	    'new_status'  =>  $ticket->status->name
 	]) !!}
 @stop

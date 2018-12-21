@@ -2,7 +2,7 @@
 
 namespace Kordy\Ticketit\Models;
 
-use Illuminate\Database\Eloquent\Model as Model;
+//use Illuminate\Database\Eloquent\Model as Model;
 use Kordy\Ticketit\Traits\ContentEllipse;
 
 class Configuration extends Model
@@ -12,11 +12,11 @@ class Configuration extends Model
     public $table = 'ticketit_settings';
 
     public $fillable = [
-    'lang',
-    'slug',
-    'value',
-    'default',
-  ];
+        'lang',
+        'slug',
+        'value',
+        'default',
+    ];
 
     // Null lang column if no value is being stored.
 
@@ -31,14 +31,14 @@ class Configuration extends Model
      * @var array
      */
     protected $casts = [
-    'id'         => 'integer',
-    'lang'       => 'string',
-    'slug'       => 'string',
-    'value'      => 'string',
-    'default'    => 'string',
-  ];
+        'id'      => 'integer',
+        'lang'    => 'string',
+        'slug'    => 'string',
+        'value'   => 'string',
+        'default' => 'string',
+    ];
 
     public static $rules = [
 
-  ];
+    ];
 }

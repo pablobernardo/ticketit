@@ -5,9 +5,9 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Helpers\LaravelVersion;
 
 class AgentsController extends Controller
 {
@@ -27,17 +27,17 @@ class AgentsController extends Controller
 
     public function store(Request $request)
     {
-    	$rules = [
+        $rules = [
             'agents' => 'required|array|min:1',
         ];
 
-        if(LaravelVersion::min('5.2')){
-        	$rules['agents.*'] = 'integer|exists:users,id';
+        if (LaravelVersion::min('5.2')) {
+            $rules['agents.*'] = 'integer|exists:' . config('ticketit.users.db_name') . '.users,id';
         }
 
-    	$this->validate($request, $rules);
+        $this->validate($request, $rules);
 
-        $agents_list = $this->addAgents($request->input('agents'));
+        $agents_list  = $this->addAgents($request->input('agents'));
         $agents_names = implode(',', $agents_list);
 
         Session::flash('status', trans('ticketit::lang.agents-are-added-to-agents', ['names' => $agents_names]));
@@ -91,14 +91,15 @@ class AgentsController extends Controller
      */
     public function removeAgent($id)
     {
-        $agent = Agent::find($id);
+        $agent                 = Agent::find($id);
         $agent->ticketit_agent = false;
         $agent->save();
 
         // Remove him from tickets categories as well
         if (version_compare(app()->version(), '5.2.0', '>=')) {
             $agent_cats = $agent->categories->pluck('id')->toArray();
-        } else { // if Laravel 5.1
+        } else {
+            // if Laravel 5.1
             $agent_cats = $agent->categories->lists('id')->toArray();
         }
 
@@ -116,7 +117,7 @@ class AgentsController extends Controller
     public function syncAgentCategories($id, Request $request)
     {
         $form_cats = ($request->input('agent_cats') == null) ? [] : $request->input('agent_cats');
-        $agent = Agent::find($id);
+        $agent     = Agent::find($id);
         $agent->categories()->sync($form_cats);
     }
 }

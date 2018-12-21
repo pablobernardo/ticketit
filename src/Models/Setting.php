@@ -3,7 +3,7 @@
 namespace Kordy\Ticketit\Models;
 
 use Cache;
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 use Kordy\Ticketit\Models\Setting as Table;
 
 class Setting extends Model
@@ -48,7 +48,7 @@ class Setting extends Model
          */
         //       Cache::flush();
 
-        $setting = Cache::remember('ticketit::settings.'.$slug, 60, function () use ($slug) {
+        $setting = Cache::remember('ticketit::settings.' . $slug, 60, function () use ($slug) {
             $settings = Cache::remember('ticketit::settings', 60, function () {
                 return Table::all();
             });
@@ -103,7 +103,7 @@ class Setting extends Model
             }
         } else {
             $semicolon = strpos($data, ';');
-            $brace = strpos($data, '}');
+            $brace     = strpos($data, '}');
             // Either ; or } must exist.
             if (false === $semicolon && false === $brace) {
                 return false;

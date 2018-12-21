@@ -22,10 +22,20 @@ class TicketitNotification extends Mailable
      */
     public function __construct($template, $data, $notification_owner, $subject)
     {
-        $this->template = $template;
-        $this->data = $data;
+        $this->template           = $template;
+        $this->data               = $data;
         $this->notification_owner = $notification_owner;
-        $this->subject = $subject;
+        $this->subject            = $subject;
+    }
+
+    /**
+     * Queued Job Tags
+     *
+     * @return [type] [description]
+     */
+    public function tags()
+    {
+        return array_merge(config('ticketit.mailable.tags'), [$this->notification_owner->email]);
     }
 
     /**

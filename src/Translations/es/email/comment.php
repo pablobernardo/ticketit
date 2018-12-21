@@ -2,11 +2,11 @@
 
 return [
 
-'data' => '
-	<b>:name</b> comentó en el tiquete: <b>:subject</b><br>
-	<b>Categoría del tiquete:</b> :category - <b>estado:</b> :status<br>
-	<br>
-	<div><b>:comment</b></div><br>
+    'data' => '
+	<strong>:name</strong> ha dejado un comentario en el ticket: <strong>:subject</strong><br />
+	<strong>Categoría:</strong> ":category" - <strong>Estado:</strong> ":status"<br />
+	<br />
+	<div><strong>:comment</strong></div><br />
 ',
 
 ];

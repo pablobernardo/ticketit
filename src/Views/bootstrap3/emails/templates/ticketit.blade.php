@@ -155,7 +155,8 @@
                     </td>
                 </tr>
             </table>
-
+            
+            {{--
             <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width" bgcolor="{{ $setting->grab('email.color_footer_bg') }}" style="margin: 0 auto">
               <tr>
                 <td style="background-color:{{ $setting->grab('email.color_footer_bg') }};">
@@ -174,6 +175,8 @@
                     <br>
                 </td>
             </tr>
+            --}}
+            
             <!-- Not implemented
             <tr>
                 <td style="color:#bbbbbb; font-size:12px;">

@@ -2,7 +2,7 @@
 
 namespace Kordy\Ticketit\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Kordy\Ticketit\Traits\ContentEllipse;
 use Kordy\Ticketit\Traits\Purifiable;
@@ -199,19 +199,19 @@ class Ticket extends Model
         $agents = Category::find($cat_id)->agents()->with(['agentOpenTickets' => function ($query) {
             $query->addSelect(['id', 'agent_id']);
         }])->get();
-        $count = 0;
+        $count          = 0;
         $lowest_tickets = 1000000;
         // If no agent selected, select the admin
-        $first_admin = Agent::admins()->first();
+        $first_admin       = Agent::admins()->first();
         $selected_agent_id = $first_admin->id;
         foreach ($agents as $agent) {
             if ($count == 0) {
-                $lowest_tickets = $agent->agentOpenTickets->count();
+                $lowest_tickets    = $agent->agentOpenTickets->count();
                 $selected_agent_id = $agent->id;
             } else {
                 $tickets_count = $agent->agentOpenTickets->count();
                 if ($tickets_count < $lowest_tickets) {
-                    $lowest_tickets = $tickets_count;
+                    $lowest_tickets    = $tickets_count;
                     $selected_agent_id = $agent->id;
                 }
             }
