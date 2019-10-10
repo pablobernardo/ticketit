@@ -23,6 +23,10 @@ Available versions and next improvements
 - [ ] ...
 
 
+### v0.4.5.2 - 2019-10-10
+
+- [x] Delete ticket comments on destroy.
+
 ### v0.4.5.1 - 2018-12-21
 
 - [x] Posibility to use a different connection that *Laravel default*.
