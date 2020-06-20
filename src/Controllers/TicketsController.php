@@ -315,6 +315,8 @@ class TicketsController extends Controller
     {
         $ticket  = $this->tickets->findOrFail($id);
         $subject = $ticket->subject;
+
+        $ticket->comments()->delete();
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));

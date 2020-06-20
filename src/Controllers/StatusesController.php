@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Status;
 
 class StatusesController extends Controller
@@ -16,7 +17,9 @@ class StatusesController extends Controller
      */
     public function index()
     {
-        $statuses = \Cache::remember('ticketit::statuses', 60, function () {
+        // seconds expected for L5.8<=, minutes before that
+        $time     = LaravelVersion::min('5.8') ? 60 * 60 : 60;
+        $statuses = \Cache::remember('ticketit::statuses', $time, function () {
             return Status::all();
         });
 
@@ -43,8 +46,8 @@ class StatusesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $status = new Status();
@@ -94,8 +97,8 @@ class StatusesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $status = Status::findOrFail($id);
@@ -118,7 +121,7 @@ class StatusesController extends Controller
     public function destroy($id)
     {
         $status = Status::findOrFail($id);
-        $name = $status->name;
+        $name   = $status->name;
         $status->delete();
 
         Session::flash('status', trans('ticketit::lang.status-name-has-been-deleted', ['name' => $name]));

@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Category;
 
 class CategoriesController extends Controller
@@ -16,7 +17,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = \Cache::remember('ticketit::categories', 60, function () {
+        // seconds expected for L5.8<=, minutes before that
+        $time       = LaravelVersion::min('5.8') ? 60 * 60 : 60;
+        $categories = \Cache::remember('ticketit::categories', $time, function () {
             return Category::all();
         });
 
@@ -43,8 +46,8 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $category = new Category();
@@ -94,8 +97,8 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $category = Category::findOrFail($id);
@@ -118,7 +121,7 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-        $name = $category->name;
+        $name     = $category->name;
         $category->delete();
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-deleted', ['name' => $name]));

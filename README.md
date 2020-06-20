@@ -1,13 +1,14 @@
 # Ticketit
 
-A simple helpdesk tickets system for Laravel 5.1+ (5.1, 5.2, 5.3, 5.4, 5.5, 5.6 and 5.7) which integrates smoothly with Laravel default users and auth system. 
-It will integrate into your current Laravel project within minutes, and you can offer your customers and your team a nice and simple support ticket system. 
+A simple helpdesk tickets system for Laravel 5.1+ (5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7 and 5.8) which integrates smoothly with Laravel default users and auth system.
+It will integrate into your current Laravel project within minutes, and you can offer your customers and your team a nice and simple support ticket system.
 
 ## Features:
+
 1. Three main users roles users, agents, and admins
 2. Users can create tickets, keep track of their tickets status, giving comments, and close their own tickets (access permissions are configurable)
 3. Auto assigning agents to tickets, the system searches for agents in specific department and auto select the agent with lowest queue
-4. Simple admin panel 
+4. Simple admin panel
 5. Localization (Arabic, Brazilian Portuguese, Deutsch (German), English, Farsi, French, Hungarian, Italian, Persian, Russian, and Spanish language packs are included)
 6. Very simple installation and integration process
 7. Admin dashboard with statistics and performance tracking graphs
@@ -30,6 +31,7 @@ However if you'd like to include Ticketit in your existing project, skip to the 
 ## Installation (manual):
 
 ### Requirements
+
 **First Make sure you have got this Laravel setup working:**
 
 1. [Laravel 5.1+](http://laravel.com/docs#installation)
@@ -44,23 +46,23 @@ However if you'd like to include Ticketit in your existing project, skip to the 
 2. [Laravel Datatables](https://github.com/yajra/laravel-datatables)
 3. [HTML Purifier](https://github.com/mewebstudio/Purifier)
 
-
 ### Installation steps (4-8 minutes)
 
 Step 1. Run this code via your terminal (1-2 minutes)
+
 ```shell
 composer require 'kordy/ticketit:0.*'
 ```
 
 Step 2. After install, you have to add this line on your `config/app.php` in Service Providers section (1-2 minutes).
+
 ```php
 Kordy\Ticketit\TicketitServiceProvider::class,
 ```
+
 Step 3. [Check if App\User exists](https://github.com/thekordy/ticketit/wiki/Make-sure-that-App%5CUser-exists)
 
-----
-
-
+---
 
 #### Step 3.1 Fork additions
 
@@ -89,17 +91,17 @@ class TicketitModel extends BaseModel
 - Publish ticketit.php config file on Laravel for customizations (some of them required before installation):
 
 ```bash
-	
+
 	# Migrations on ticketit
 	$ artisan vendor:publish --provider="Kordy\Ticketit\TicketitServiceProvider" --tag=config --force
 
 ```
 
-- Add your custom database connections at .env  for example:
+- Add your custom database connections at .env for example:
 
 ```bash
 	# Migrations on ticketit
-	# I have only checked using same connection for both. 
+	# I have only checked using same connection for both.
 	# Maybe it doesn't work with different connections because of raw sql joins in some parts of code
 	TICKETIT_CONNECTION=default
 	TICKETIT_DB=users
@@ -108,7 +110,7 @@ class TicketitModel extends BaseModel
 
 ```
 
-----
+---
 
 Step 4. Make sure you have [authentication](https://laravel.com/docs/5.4/authentication#introduction) set up. In 5.2+, you can use `php artisan make:auth`
 
@@ -133,12 +135,15 @@ If you move your installation folder to another path (or server), you need to up
 After upgrading from `0.3.*` to `0.4`, visit url `http://your-project-url/tickets-upgrade`. This adds new rows to the config table automatically.
 
 ## Documentation
+
 [Ticketit Wiki](https://github.com/thekordy/ticketit/wiki)
 
 ## Support:
+
 [Review features requests, give your feedback, suggest features, report issues](https://github.com/thekordy/ticketit/issues)
 
 ## Live Demo
+
 http://ticketit.kordy.info/tickets
 
 ## Project contributors (the project heros):
@@ -150,4 +155,3 @@ https://github.com/thekordy/ticketit/graphs/contributors
 ## Download statistics
 
 [![statistics](https://packagist-statistics.dura.hu/kordy/ticketit/10days.svg)](https://packagist-statistics.dura.hu/kordy/ticketit/10days.svg)
-

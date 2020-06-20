@@ -3,7 +3,6 @@
 namespace Kordy\Ticketit;
 
 use Collective\Html\FormFacade as CollectiveForm;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -92,49 +91,49 @@ class TicketitServiceProvider extends ServiceProvider
                 return true;
             });
 
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
+            $this->loadTranslationsFrom(__DIR__ . '/Translations', 'ticketit');
 
-            $viewsDirectory = __DIR__.'/Views/bootstrap3';
+            $viewsDirectory = __DIR__ . '/Views/bootstrap3';
             if (Setting::grab('bootstrap_version') == '4') {
-                $viewsDirectory = __DIR__.'/Views/bootstrap4';
+                $viewsDirectory = __DIR__ . '/Views/bootstrap4';
             }
 
             $this->loadViewsFrom($viewsDirectory, 'ticketit');
 
             $this->publishes([$viewsDirectory => base_path('resources/views/vendor/ticketit')], 'views');
-            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'lang');
-            $this->publishes([__DIR__.'/Public' => public_path('vendor/ticketit')], 'public');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
+            $this->publishes([__DIR__ . '/Translations' => base_path('resources/lang/vendor/ticketit')], 'lang');
+            $this->publishes([__DIR__ . '/Public' => public_path('vendor/ticketit')], 'public');
+            $this->publishes([__DIR__ . '/Migrations' => base_path('database/migrations')], 'db');
 
             // Publish ticketit config
-            $this->publishes([__DIR__.'/Config' => base_path('config')], 'config');
-            
-            // Check public assets are present, publish them if not
-//            $installer->publicAssets();
+            $this->publishes([__DIR__ . '/Config' => base_path('config')], 'config');
 
-            $main_route = Setting::grab('main_route');
-            $main_route_path = Setting::grab('main_route_path');
-            $admin_route = Setting::grab('admin_route');
+            // Check public assets are present, publish them if not
+            //            $installer->publicAssets();
+
+            $main_route       = Setting::grab('main_route');
+            $main_route_path  = Setting::grab('main_route_path');
+            $admin_route      = Setting::grab('admin_route');
             $admin_route_path = Setting::grab('admin_route_path');
 
             if (file_exists(Setting::grab('routes'))) {
                 include Setting::grab('routes');
             } else {
-                include __DIR__.'/routes.php';
+                include __DIR__ . '/routes.php';
             }
         } elseif (Request::path() == 'tickets-install'
-                || Request::path() == 'tickets-upgrade'
-                || Request::path() == 'tickets'
-                || Request::path() == 'tickets-admin'
-                || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
-            $this->loadViewsFrom(__DIR__.'/Views/bootstrap3', 'ticketit');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
-            
-            // Publish ticketit config
-            $this->publishes([__DIR__.'/Config' => base_path('config')], 'config');
+            || Request::path() == 'tickets-upgrade'
+            || Request::path() == 'tickets'
+            || Request::path() == 'tickets-admin'
+            || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
+            $this->loadTranslationsFrom(__DIR__ . '/Translations', 'ticketit');
+            $this->loadViewsFrom(__DIR__ . '/Views/bootstrap3', 'ticketit');
+            $this->publishes([__DIR__ . '/Migrations' => base_path('database/migrations')], 'db');
 
-            $authMiddleware = Helpers\LaravelVersion::authMiddleware();
+            // Publish ticketit config
+            $this->publishes([__DIR__ . '/Config' => base_path('config')], 'config');
+
+            $authMiddleware = LaravelVersion::authMiddleware();
 
             Route::get('/tickets-install', [
                 'middleware' => $authMiddleware,

@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Priority;
 
 class PrioritiesController extends Controller
@@ -16,7 +17,9 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $priorities = \Cache::remember('ticketit::priorities', 60, function () {
+        // seconds expected for L5.8<=, minutes before that
+        $time       = LaravelVersion::min('5.8') ? 60 * 60 : 60;
+        $priorities = \Cache::remember('ticketit::priorities', $time, function () {
             return Priority::all();
         });
 
@@ -43,8 +46,8 @@ class PrioritiesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $priority = new Priority();
@@ -94,8 +97,8 @@ class PrioritiesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
+            'name'  => 'required',
+            'color' => 'required',
         ]);
 
         $priority = Priority::findOrFail($id);
@@ -118,7 +121,7 @@ class PrioritiesController extends Controller
     public function destroy($id)
     {
         $priority = Priority::findOrFail($id);
-        $name = $priority->name;
+        $name     = $priority->name;
         $priority->delete();
 
         Session::flash('status', trans('ticketit::lang.priority-name-has-been-deleted', ['name' => $name]));
