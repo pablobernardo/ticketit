@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Kordy\Ticketit\Console\Htmlify;
 use Kordy\Ticketit\Controllers\InstallController;
 use Kordy\Ticketit\Controllers\NotificationsController;
+use Kordy\Ticketit\Helpers\Custom as Custom;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Comment;
 use Kordy\Ticketit\Models\Setting;
@@ -25,7 +26,11 @@ class TicketitServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!Schema::hasTable('migrations')) {
+        // Custom migrations table
+        $migrations_table = Custom::env('DATABASE_MIGRATIONS_TABLE', 'migrations');
+
+        //if (!Schema::hasTable('da_migrations')) {
+        if (!Schema::hasTable($migrations_table)) {
             // Database isn't installed yet.
             return;
         }

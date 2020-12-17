@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Kordy\Ticketit\Helpers\Custom as Custom;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Seeds\SettingsTableSeeder;
@@ -213,6 +214,9 @@ class InstallController extends Controller
      */
     public function inactiveMigrations()
     {
+        // Custom migrations table
+        $migrations_table = Custom::env('DATABASE_MIGRATIONS_TABLE', DB::getTablePrefix() . 'migrations');
+
         $inactiveMigrations = [];
         $migration_arr      = [];
 
@@ -220,7 +224,8 @@ class InstallController extends Controller
         $tables = $this->migrations_tables;
 
         // Application active migrations
-        $migrations = DB::select('select * from ' . DB::getTablePrefix() . 'migrations');
+        //$migrations = DB::select('select * from ' . DB::getTablePrefix() . 'migrations');
+        $migrations = DB::select('select * from ' . $migrations_table);
 
         foreach ($migrations as $migration_parent) {
             // Count active package migrations

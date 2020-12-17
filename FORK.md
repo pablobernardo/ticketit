@@ -14,6 +14,11 @@ Documentation about forked package.
 
 Available versions and next improvements
 
+### v0.4.5.4 - 2020-12-17
+
+- [x] Get environment values from custom or generic `env()` function
+- [x] Support toggle `migrations` table name.
+
 ### v0.4.5.3 - 2020-06-20
 
 - [x] Array helpers to `Illuminate\Support\Arr::*`
